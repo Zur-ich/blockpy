@@ -22,6 +22,9 @@ public class LessonActivity extends AppCompatActivity {
     private Lesson currentLesson;
     private List<Lesson> allLessons;
     private SharedPreferences sharedPreferences;
+    private int quizScore = 0; // Track the quiz score
+
+    private LessonProgressManager progressManager;
 
     @Override
     protected void onCreate(Bundle sIS) {
@@ -30,6 +33,7 @@ public class LessonActivity extends AppCompatActivity {
 
         // Initialize SharedPreferences for lesson progress
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        progressManager = new LessonProgressManager(this);
 
         Intent i = getIntent();
         if (i != null && i.hasExtra("LESSON_ID"))
@@ -199,6 +203,9 @@ public class LessonActivity extends AppCompatActivity {
 
     public void showQuizResult(int score, int total) {
         Log.d(TAG, "Show Result:" + score + "/" + total);
+        // Save the score for when lesson is completed
+        this.quizScore = score;
+
         getSupportFragmentManager().popBackStack("Quiz", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         QuizResultFragment f = QuizResultFragment.newInstance(score, total);
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
@@ -212,8 +219,10 @@ public class LessonActivity extends AppCompatActivity {
     public void lessonComplete() {
         Log.d(TAG, "Lesson Complete");
 
-        // Mark this lesson as completed to unlock the next one
-        markCurrentLessonAsCompleted();
+        // Mark this lesson as completed with the quiz score
+        if (currentLesson != null) {
+            progressManager.markLessonAsCompleted(currentLesson.getId(), quizScore);
+        }
 
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         new Handler(Looper.getMainLooper()).postDelayed(this::finish, 500);
