@@ -1,7 +1,8 @@
 package com.example.BlockPy; // Use your package name
 
 
-import android.content.Context; import android.content.res.ColorStateList; import android.graphics.Color;
+import android.content.Context; import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;

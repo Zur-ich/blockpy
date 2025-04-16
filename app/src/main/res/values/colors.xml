@@ -18,4 +18,10 @@
     <color name="quiz_incorrect_red">#F44336</color>
     <color name="quiz_default_background">@color/dark_surface</color>
     <color name="quiz_selected_background">#424242</color>
+
+    <color name="lesson_color_1">@android:color/holo_red_light</color>
+    <color name="lesson_color_2">@android:color/holo_blue_light</color>
+    <color name="lesson_color_3">@android:color/holo_green_light</color>
+    <color name="lesson_color_4">@android:color/holo_orange_light</color>
+    <color name="lesson_color_5">@android:color/holo_purple</color>
 </resources>
