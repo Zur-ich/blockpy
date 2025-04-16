@@ -1,33 +1,39 @@
 package com.example.BlockPy;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.BlockPy.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LessonAdapter.OnLessonClickListener {
+public class MainActivity extends AppCompatActivity {
     private RecyclerView lessonRecyclerView;
-    private LessonAdapter lessonAdapter;
     private List<Lesson> lessonList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.example.BlockPy.R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
         lessonRecyclerView = findViewById(R.id.lessonRecyclerView);
         initializeRecyclerView();
 
         loadLessons();
-        lessonAdapter = new LessonAdapter(lessonList, this);
-        lessonRecyclerView.setAdapter(lessonAdapter);
+        setupLessonList();
     }
 
     private void initializeRecyclerView() {
@@ -65,17 +71,111 @@ public class MainActivity extends AppCompatActivity implements LessonAdapter.OnL
         Log.d("MainActivity", "Loaded "+lessonList.size()+" lessons.");
     }
 
+    // Add this inner class to your MainActivity class
+    private class LessonListAdapter extends RecyclerView.Adapter<LessonListAdapter.ViewHolder> {
+        private List<Lesson> lessons;
+        private LessonProgressManager progressManager;
+
+        public LessonListAdapter(List<Lesson> lessons) {
+            this.lessons = lessons;
+            this.progressManager = new LessonProgressManager(MainActivity.this);
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item_lesson, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            Lesson lesson = lessons.get(position);
+            holder.lessonTitle.setText(lesson.getTitle());
+
+            // Check if the lesson is unlocked
+            boolean isUnlocked = progressManager.isLessonUnlocked(lesson.getId());
+
+            // Set the lock/unlock icon
+            if (isUnlocked) {
+                holder.lessonIcon.setImageResource(R.drawable.ic_unlock);
+            } else {
+                holder.lessonIcon.setImageResource(R.drawable.ic_lock);
+            }
+
+            // Set background color based on the lesson position
+            int backgroundResId;
+            switch (position) {
+                case 0: // L1
+                    backgroundResId = R.drawable.lesson_bg_red;
+                    break;
+                case 1: // L2
+                    backgroundResId = R.drawable.lesson_bg_blue;
+                    break;
+                case 2: // L3
+                    backgroundResId = R.drawable.lesson_bg_green;
+                    break;
+                case 3: // L4
+                    backgroundResId = R.drawable.lesson_bg_yellow;
+                    break;
+                case 4: // L5
+                    backgroundResId = R.drawable.lesson_bg_orange;
+                    break;
+                default:
+                    backgroundResId = android.R.color.white;
+                    break;
+            }
+
+            // Apply background
+            View lessonContainer = holder.itemView.findViewById(R.id.lesson_container);
+            lessonContainer.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), backgroundResId));
+
+            // Handle click based on lock status
+            holder.itemView.setOnClickListener(v -> {
+                if (isUnlocked) {
+                    // Start LessonActivity with the selected lesson
+                    Intent intent = new Intent(MainActivity.this, LessonActivity.class);
+                    intent.putExtra("LESSON_ID", lesson.getId());
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MainActivity.this,
+                            "Complete previous lessons to unlock!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return lessons.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            ImageView lessonIcon;
+            TextView lessonTitle;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                lessonIcon = itemView.findViewById(R.id.lesson_icon);
+                lessonTitle = itemView.findViewById(R.id.lesson_title);
+            }
+        }
+    }
+
+    // Then in your MainActivity where you setup the RecyclerView:
+    private void setupLessonList() {
+        // Use the already initialized lessonRecyclerView from onCreate
+        LessonListAdapter adapter = new LessonListAdapter(lessonList);
+        lessonRecyclerView.setAdapter(adapter);
+    }
+
     @Override
-    public void onLessonClick(int pos) {
-        if (lessonList == null || pos < 0 || pos >= lessonList.size()) {
-            return;
+    protected void onResume() {
+        super.onResume();
+        // Refresh lesson list to update lock status
+        if (lessonRecyclerView.getAdapter() != null) {
+            lessonRecyclerView.getAdapter().notifyDataSetChanged();
         }
-        Lesson selectedLesson = lessonList.get(pos);
-        if (selectedLesson == null || selectedLesson.getId() == null) {
-            return;
-        }
-        Intent intent = new Intent(this, LessonActivity.class);
-        intent.putExtra("LESSON_ID", selectedLesson.getId());
-        startActivity(intent);
     }
 }
