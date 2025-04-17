@@ -25,6 +25,7 @@ public class LessonActivity extends AppCompatActivity {
     private int quizScore = 0; // Track the quiz score
 
     private LessonProgressManager progressManager;
+    private AchievementManager achievementManager; // Add AchievementManager
 
     @Override
     protected void onCreate(Bundle sIS) {
@@ -34,6 +35,7 @@ public class LessonActivity extends AppCompatActivity {
         // Initialize SharedPreferences for lesson progress
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         progressManager = new LessonProgressManager(this);
+        achievementManager = new AchievementManager(this); // Initialize AchievementManager
 
         Intent i = getIntent();
         if (i != null && i.hasExtra("LESSON_ID"))
@@ -221,7 +223,11 @@ public class LessonActivity extends AppCompatActivity {
 
         // Mark this lesson as completed with the quiz score
         if (currentLesson != null) {
-            progressManager.markLessonAsCompleted(currentLesson.getId(), quizScore);
+            String lessonId = currentLesson.getId();
+            progressManager.markLessonAsCompleted(lessonId, quizScore);
+
+            // Check and show achievement
+            achievementManager.checkAndShowAchievement(lessonId, quizScore);
         }
 
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
