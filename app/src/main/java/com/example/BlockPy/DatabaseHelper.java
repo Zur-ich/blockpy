@@ -61,6 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Mark a lesson as completed
+    // In DatabaseHelper.java
     public boolean markLessonAsCompleted(String lessonId, int score) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -68,12 +69,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_SCORE, score);
         values.put(COLUMN_COMPLETION_DATE, System.currentTimeMillis()); // Current timestamp
 
-        int rowsAffected = db.update(TABLE_LESSONS, values, COLUMN_ID + " = ?", new String[]{lessonId});
-        db.close();
+        // Add more logging to track the update
+        Log.d(TAG, "Attempting to mark lesson as completed: " + lessonId + " with score: " + score);
 
+        int rowsAffected = db.update(TABLE_LESSONS, values, COLUMN_ID + " = ?", new String[]{lessonId});
+        Log.d(TAG, "markLessonAsCompleted: " + lessonId + " affected rows: " + rowsAffected);
+
+        // Verify the update worked
+        boolean verified = isLessonCompleted(lessonId);
+        Log.d(TAG, "Verification after update: Lesson " + lessonId + " is completed: " + verified);
+
+        db.close();
         return rowsAffected > 0;
     }
-
     // Check if a lesson is completed
     public boolean isLessonCompleted(String lessonId) {
         SQLiteDatabase db = this.getReadableDatabase();

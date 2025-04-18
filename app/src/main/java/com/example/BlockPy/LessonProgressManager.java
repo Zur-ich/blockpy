@@ -11,14 +11,15 @@ public class LessonProgressManager {
         this.dbHelper = new DatabaseHelper(context);
     }
 
-    public void markLessonAsCompleted(String lessonId, int score) {
+    public boolean markLessonAsCompleted(String lessonId, int score) {
         if (lessonId == null || lessonId.isEmpty()) {
             Log.e(TAG, "Invalid lesson ID");
-            return;
+            return false;
         }
 
         dbHelper.markLessonAsCompleted(lessonId, score);
         Log.d(TAG, "Lesson completed and saved: " + lessonId + " with score: " + score);
+        return false;
     }
 
     public boolean isLessonCompleted(String lessonId) {

@@ -171,11 +171,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    // In MainActivity.java, enhance the onResume() method:
     protected void onResume() {
         super.onResume();
-        // Refresh lesson list to update lock status
-        if (lessonRecyclerView.getAdapter() != null) {
-            lessonRecyclerView.getAdapter().notifyDataSetChanged();
+
+        // Create a fresh adapter each time to ensure updated data
+        LessonListAdapter adapter = new LessonListAdapter(lessonList);
+        lessonRecyclerView.setAdapter(adapter);
+
+        // Add detailed logging to track lesson unlock status
+        Log.d("MainActivity", "onResume: Refreshing lesson adapter");
+        LessonProgressManager progressMgr = new LessonProgressManager(this);
+
+        for (Lesson lesson : lessonList) {
+            boolean isCompleted = progressMgr.isLessonCompleted(lesson.getId());
+            boolean isUnlocked = progressMgr.isLessonUnlocked(lesson.getId());
+            Log.d("MainActivity", "Lesson " + lesson.getId() +
+                    " - Completed: " + isCompleted +
+                    ", Unlocked: " + isUnlocked);
         }
     }
 }

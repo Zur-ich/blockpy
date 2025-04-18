@@ -135,19 +135,9 @@ public class LessonActivity extends AppCompatActivity {
     }
 
     // Check if a lesson is unlocked based on previous lesson completion
+    // In LessonActivity.java - replace the isLessonUnlocked method with this:
     private boolean isLessonUnlocked(String lessonId) {
-        // First lesson is always unlocked
-        if ("L1".equals(lessonId)) {
-            return true;
-        }
-
-        // Check if previous lesson was completed
-        String previousLessonId = getPreviousLessonId(lessonId);
-        if (previousLessonId != null) {
-            return isLessonCompleted(previousLessonId);
-        }
-
-        return false;
+        return progressManager.isLessonUnlocked(lessonId);
     }
 
     // Check if a lesson has been completed
@@ -218,13 +208,23 @@ public class LessonActivity extends AppCompatActivity {
         }
     }
 
+
     public void lessonComplete() {
         Log.d(TAG, "Lesson Complete");
 
         // Mark this lesson as completed with the quiz score
         if (currentLesson != null) {
             String lessonId = currentLesson.getId();
-            progressManager.markLessonAsCompleted(lessonId, quizScore);
+
+            // Mark the lesson as completed in the database
+            boolean success = progressManager.markLessonAsCompleted(lessonId, quizScore);
+
+            // Add logging to verify
+            Log.d(TAG, "Lesson " + lessonId + " marked complete: " + success);
+
+            // Check if the database actually shows the lesson as completed
+            boolean isCompleted = progressManager.isLessonCompleted(lessonId);
+            Log.d(TAG, "Verification - Lesson " + lessonId + " is now marked as completed: " + isCompleted);
 
             // Check and show achievement
             achievementManager.checkAndShowAchievement(lessonId, quizScore);
@@ -233,7 +233,6 @@ public class LessonActivity extends AppCompatActivity {
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         new Handler(Looper.getMainLooper()).postDelayed(this::finish, 500);
     }
-
     @Override
     public void finish() {
         super.finish();
