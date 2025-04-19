@@ -58,4 +58,5 @@ public class LectureFragment extends Fragment {
                 getActivity().finish();
         });
     }
+    
 }
