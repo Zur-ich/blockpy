@@ -22,19 +22,20 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@android:drawable/star_on"
-            android:tint="#FFD700" />
+            app:tint="#FFD700" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/achievement_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Achievement Unlocked!"
+                android:text=" New Achievement Unlocked!"
                 android:textColor="#FFD700"
                 android:textSize="14sp" />
 

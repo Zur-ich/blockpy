@@ -24,7 +24,7 @@ public class AchievementManager {
     private static final Map<String, String> ACHIEVEMENT_TITLES = new HashMap<>();
 
     static {
-        ACHIEVEMENT_TITLES.put("L1", "Print Master");
+        ACHIEVEMENT_TITLES.put("L1", "Print Punisher");
         ACHIEVEMENT_TITLES.put("L2", "Variable Virtuoso");
         ACHIEVEMENT_TITLES.put("L3", "Operation Operator");
         ACHIEVEMENT_TITLES.put("L4", "Loop Legend");
@@ -37,12 +37,17 @@ public class AchievementManager {
     static {
         // You can add custom icons for each achievement later
         // For now, we'll use a star icon from Android resources
-        int starIcon = android.R.drawable.star_on;
-        ACHIEVEMENT_ICONS.put("L1", starIcon);
-        ACHIEVEMENT_ICONS.put("L2", starIcon);
-        ACHIEVEMENT_ICONS.put("L3", starIcon);
-        ACHIEVEMENT_ICONS.put("L4", starIcon);
-        ACHIEVEMENT_ICONS.put("L5", starIcon);
+        int PrintIcon = R.drawable.achievement_print;
+        int VariableIcon = R.drawable.achievement_variable;;
+        int OperationIcon = R.drawable.achievement_operation;;
+        int LoopsIcon = R.drawable.achievement_loop;
+        int ArrayIcon = R.drawable.achievement_array;
+
+        ACHIEVEMENT_ICONS.put("L1", PrintIcon);
+        ACHIEVEMENT_ICONS.put("L2", VariableIcon);
+        ACHIEVEMENT_ICONS.put("L3", OperationIcon);
+        ACHIEVEMENT_ICONS.put("L4", LoopsIcon);
+        ACHIEVEMENT_ICONS.put("L5", ArrayIcon);
     }
 
     private Context context;
