@@ -8,26 +8,60 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <!-- Original colors -->
     <color name="dark_background">#ededed</color>
     <color name="dark_surface">#e1e1e1</color>
     <color name="dark_text_primary">#1E1E1E</color>
     <color name="dark_text_secondary">#99000000</color>
     <color name="dark_grey">#bdbdbd</color>
 
-    <color name="quiz_correct_green">#4CAF50</color>
-    <color name="quiz_incorrect_red">#F44336</color>
-    <color name="quiz_default_background">@color/dark_surface</color>
-    <color name="quiz_selected_background">#424242</color>
-    <color name="background">#BEF8ECEC</color>
+    <!-- Enhanced lesson backgrounds -->
+    <color name="lesson_color_1">#E91E63</color> <!-- More vibrant red -->
+    <color name="lesson_color_2">#2196F3</color> <!-- Brighter blue -->
+    <color name="lesson_color_3">#4CAF50</color> <!-- Vivid green -->
+    <color name="lesson_color_4">#FFC107</color> <!-- Stronger yellow -->
+    <color name="lesson_color_5">#FF9800</color> <!-- Richer orange -->
 
+    <!-- Lighter versions for sub-lesson tabs -->
+    <color name="lesson_color_1_light">#F8BBD0</color> <!-- Lighter red -->
+    <color name="lesson_color_2_light">#BBDEFB</color> <!-- Lighter blue -->
+    <color name="lesson_color_3_light">#C8E6C9</color> <!-- Lighter green -->
+    <color name="lesson_color_4_light">#FFECB3</color> <!-- Lighter yellow -->
+    <color name="lesson_color_5_light">#FFE0B2</color> <!-- Lighter orange -->
 
-    <color name="lesson_color_1">@android:color/holo_red_light</color>
-    <color name="lesson_color_2">@android:color/holo_blue_light</color>
-    <color name="lesson_color_3">@android:color/holo_green_light</color>
-    <color name="lesson_color_4">@android:color/holo_orange_light</color>
-    <color name="lesson_color_5">@android:color/holo_purple</color>
+    <!-- Quiz colors -->
+    <color name="quiz_bg">#F5F7FF</color> <!-- Light blue-gray background -->
+    <color name="quiz_card_bg">#9B59B6</color> <!-- Vibrant purple for question card -->
+    <color name="quiz_progress_bg">#E0E0FF</color> <!-- Light purple for progress background -->
+    <color name="quiz_progress">#6C5CE7</color> <!-- Deep purple for progress -->
+    <color name="quiz_score_bg">#6C5CE7</color> <!-- Deep purple for score box -->
+    <color name="quiz_button">#9B59B6</color> <!-- Match question card -->
+
+    <!-- Quiz option cards -->
+    <color name="quiz_default_background">#FFFFFF</color> <!-- White background -->
+    <color name="quiz_selected_background">#E8D2F0</color> <!-- Light purple when selected -->
+    <color name="quiz_correct_green">#4CAF50</color> <!-- Brighter green for correct -->
+    <color name="quiz_incorrect_red">#F44336</color> <!-- Brighter red for incorrect -->
+    <color name="quiz_text_color">#424242</color> <!-- Darker gray for better contrast -->
+    <color name="quiz_ripple_color">#B388FF</color> <!-- Light purple ripple effect -->
+
+    <!-- Lecture colors -->
+    <color name="lecture_bg">#F9F4FF</color> <!-- Light purple background -->
+    <color name="lecture_card_bg">#FFFFFF</color> <!-- White for content card -->
+    <color name="lecture_title">#4A148C</color> <!-- Dark purple for title -->
+    <color name="lecture_text">#303030</color> <!-- Dark gray for better readability -->
+    <color name="lecture_button">#9C27B0</color> <!-- Purple button -->
+
+    <!-- Result colors -->
+    <color name="result_bg">#F5F7FF</color> <!-- Match quiz background -->
+    <color name="result_star">#FFC107</color> <!-- Gold for achievement star -->
+    <color name="result_title">#9C27B0</color> <!-- Purple for title -->
+    <color name="result_score">#4A148C</color> <!-- Dark purple for score -->
+    <color name="result_button">#9C27B0</color> <!-- Purple button -->
+
     <color name="option_selected">#4A4A4A</color>
     <color name="option_unselected">#D8D8D8</color>
     <color name="text_selected">#FFFFFF</color>
     <color name="text_unselected">#333333</color>
+    <color name="background">#BEF8ECEC</color>
 </resources>

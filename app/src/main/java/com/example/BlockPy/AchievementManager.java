@@ -24,30 +24,76 @@ public class AchievementManager {
     private static final Map<String, String> ACHIEVEMENT_TITLES = new HashMap<>();
 
     static {
-        ACHIEVEMENT_TITLES.put("L1", "Print Punisher");
-        ACHIEVEMENT_TITLES.put("L2", "Variable Virtuoso");
-        ACHIEVEMENT_TITLES.put("L3", "Operation Operator");
-        ACHIEVEMENT_TITLES.put("L4", "Loop Legend");
-        ACHIEVEMENT_TITLES.put("L5", "Array Ace");
+        ACHIEVEMENT_TITLES.put("L1", "Python Explorer");
+        ACHIEVEMENT_TITLES.put("L2", "Print Punisher");
+        ACHIEVEMENT_TITLES.put("L3", "Variable Virtuoso");
+        ACHIEVEMENT_TITLES.put("L4", "Operation Operator");
+        ACHIEVEMENT_TITLES.put("L5", "Conditional Commander");
+        ACHIEVEMENT_TITLES.put("L6", "Loop Legend");
+        ACHIEVEMENT_TITLES.put("L7", "Array Ace");
+
+        // Sub-lesson achievements (for future use)
+        ACHIEVEMENT_TITLES.put("L1.1", "Python Beginner");
+        ACHIEVEMENT_TITLES.put("L1.2", "Program Builder");
+        ACHIEVEMENT_TITLES.put("L1.3", "Python Helper");
+
+        ACHIEVEMENT_TITLES.put("L2.1", "Python Speaker");
+        ACHIEVEMENT_TITLES.put("L2.2", "Word Printer");
+        ACHIEVEMENT_TITLES.put("L2.3", "Number Printer");
+
+        ACHIEVEMENT_TITLES.put("L3.1", "Box Master");
+        ACHIEVEMENT_TITLES.put("L3.2", "Name Giver");
+        ACHIEVEMENT_TITLES.put("L3.3", "Value Changer");
+
+        ACHIEVEMENT_TITLES.put("L4.1", "Addition Ace");
+        ACHIEVEMENT_TITLES.put("L4.2", "Subtraction Star");
+        ACHIEVEMENT_TITLES.put("L4.3", "Comparison King");
+
+        ACHIEVEMENT_TITLES.put("L5.1", "Choice Champion");
+        ACHIEVEMENT_TITLES.put("L5.2", "If-Then Expert");
+        ACHIEVEMENT_TITLES.put("L5.3", "Question Answerer");
+
+        ACHIEVEMENT_TITLES.put("L6.1", "Repeat Master");
+        ACHIEVEMENT_TITLES.put("L6.2", "Count Captain");
+        ACHIEVEMENT_TITLES.put("L6.3", "Loop Navigator");
+
+        ACHIEVEMENT_TITLES.put("L7.1", "Basket Builder");
+        ACHIEVEMENT_TITLES.put("L7.2", "List Editor");
+        ACHIEVEMENT_TITLES.put("L7.3", "Item Finder");
     }
 
     // Map of lesson IDs to their achievement icons (resource IDs)
     private static final Map<String, Integer> ACHIEVEMENT_ICONS = new HashMap<>();
 
     static {
-        // You can add custom icons for each achievement later
-        // For now, we'll use a star icon from Android resources
-        int PrintIcon = R.drawable.achievement_print;
-        int VariableIcon = R.drawable.achievement_variable;;
-        int OperationIcon = R.drawable.achievement_operation;;
-        int LoopsIcon = R.drawable.achievement_loop;
-        int ArrayIcon = R.drawable.achievement_array;
+        // Updated with specific icons for each lesson
+        int introIcon = R.drawable.achievement_print;
+        int printIcon = R.drawable.achievement_print;
+        int variableIcon = R.drawable.achievement_variable;
+        int operationIcon = R.drawable.achievement_condition;
+        int conditionalIcon = R.drawable.achievement_operation;
+        int loopsIcon = R.drawable.achievement_loop;
+        int arrayIcon = R.drawable.achievement_array;
 
-        ACHIEVEMENT_ICONS.put("L1", PrintIcon);
-        ACHIEVEMENT_ICONS.put("L2", VariableIcon);
-        ACHIEVEMENT_ICONS.put("L3", OperationIcon);
-        ACHIEVEMENT_ICONS.put("L4", LoopsIcon);
-        ACHIEVEMENT_ICONS.put("L5", ArrayIcon);
+        // Main lesson achievements
+        ACHIEVEMENT_ICONS.put("L1", introIcon);
+        ACHIEVEMENT_ICONS.put("L2", printIcon);
+        ACHIEVEMENT_ICONS.put("L3", variableIcon);
+        ACHIEVEMENT_ICONS.put("L4", operationIcon);
+        ACHIEVEMENT_ICONS.put("L5", conditionalIcon);
+        ACHIEVEMENT_ICONS.put("L6", loopsIcon);
+        ACHIEVEMENT_ICONS.put("L7", arrayIcon);
+
+        // Sub-lesson achievements use the same icons as their parents
+        for (int i = 1; i <= 3; i++) {
+            ACHIEVEMENT_ICONS.put("L1." + i, introIcon);
+            ACHIEVEMENT_ICONS.put("L2." + i, printIcon);
+            ACHIEVEMENT_ICONS.put("L3." + i, variableIcon);
+            ACHIEVEMENT_ICONS.put("L4." + i, operationIcon);
+            ACHIEVEMENT_ICONS.put("L5." + i, conditionalIcon);
+            ACHIEVEMENT_ICONS.put("L6." + i, loopsIcon);
+            ACHIEVEMENT_ICONS.put("L7." + i, arrayIcon);
+        }
     }
 
     private Context context;

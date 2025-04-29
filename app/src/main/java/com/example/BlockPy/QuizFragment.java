@@ -3,12 +3,14 @@ package com.example.BlockPy; // Use your package name
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.RippleDrawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
 import androidx.annotation.*;
@@ -150,32 +152,45 @@ public class QuizFragment extends Fragment {
         Log.d(TAG,"Displayed Q"+(currentQuestionIndex+1));
     }
 
+    // This code would be used in QuizFragment.java's createOptionCardView method
+
+    /**
+     * Creates a nicely styled option card for the quiz
+     */
     @NonNull
-    private CardView createOptionCardView(Context ctx, String txt, int idx){
-        CardView cv=new CardView(ctx);
-        LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(
+    private CardView createOptionCardView(Context ctx, String txt, int idx) {
+        CardView cv = new CardView(ctx);
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        p.setMargins(0,0,0,(int)(8*ctx.getResources().getDisplayMetrics().density));
+        p.setMargins(0, 0, 0, (int)(12 * ctx.getResources().getDisplayMetrics().density));
         cv.setLayoutParams(p);
-        cv.setRadius(12*ctx.getResources().getDisplayMetrics().density);
-        cv.setCardBackgroundColor(ContextCompat.getColor(ctx,R.color.quiz_default_background));
+        cv.setRadius(16 * ctx.getResources().getDisplayMetrics().density); // Larger radius
+        cv.setCardBackgroundColor(ContextCompat.getColor(ctx, R.color.quiz_default_background));
+        cv.setCardElevation(4 * ctx.getResources().getDisplayMetrics().density); // Add elevation
         cv.setClickable(true);
         cv.setFocusable(true);
 
-        TextView tv=new TextView(ctx);
+        TextView tv = new TextView(ctx);
         tv.setText(txt);
-        tv.setTextColor(ContextCompat.getColor(ctx,R.color.dark_text_primary));
-        tv.setPadding(32,32,32,32);
-        tv.setTextAppearance(ctx,androidx.appcompat.R.style.TextAppearance_AppCompat_Medium);
+        tv.setTextColor(ContextCompat.getColor(ctx, R.color.quiz_text_color));
+        tv.setPadding(32, 36, 32, 36); // More vertical padding
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16); // Slightly larger text
         tv.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         cv.addView(tv);
 
+        // Add a ripple effect for better feedback
+        RippleDrawable ripple = new RippleDrawable(
+                ColorStateList.valueOf(ContextCompat.getColor(ctx, R.color.quiz_ripple_color)),
+                null,
+                null);
+        cv.setForeground(ripple);
+
         cv.setOnClickListener(v -> {
             playSound(clickSoundPlayer);
-            handleOptionSelection(idx,cv);
+            handleOptionSelection(idx, cv);
         });
 
         return cv;
@@ -282,4 +297,5 @@ public class QuizFragment extends Fragment {
             incorrectSoundPlayer = null;
         }
     }
+
 }
