@@ -31,16 +31,13 @@ public class LessonProgressManager {
 
     /**
      * Determines if a lesson is unlocked and available to be played
-     * - Main lessons (L1, L2, etc.) are unlocked if previous main lesson is completed
-     * - First lesson (L1) is always unlocked
-     * - Sub-lessons have different unlock rules (see isSubLessonUnlocked)
      */
     public boolean isLessonUnlocked(String lessonId) {
         if (lessonId == null || lessonId.isEmpty()) {
             return false;
         }
 
-        // Handle sub-lessons specially
+        // Check if this is a main lesson or sub-lesson
         if (lessonId.contains(".")) {
             return isSubLessonUnlocked(lessonId);
         }
@@ -52,15 +49,7 @@ public class LessonProgressManager {
 
         // Check if previous lesson was completed
         String previousLessonId = getPreviousLessonId(lessonId);
-        if (previousLessonId != null) {
-            return dbHelper.isLessonCompleted(previousLessonId);
-        }
-
-        return false;
-    }
-
-    public int getLessonScore(String lessonId) {
-        return dbHelper.getLessonScore(lessonId);
+        return previousLessonId != null && dbHelper.isLessonCompleted(previousLessonId);
     }
 
     /**
@@ -106,6 +95,36 @@ public class LessonProgressManager {
         return false;
     }
 
+    /**
+     * Unlock the next sub-lesson based on current completed sub-lesson
+     */
+    public void unlockNextSubLesson(String completedSubLessonId) {
+        if (completedSubLessonId == null || !completedSubLessonId.contains(".")) {
+            return;
+        }
+
+        String[] parts = completedSubLessonId.split("\\.");
+        if (parts.length != 2) {
+            return;
+        }
+
+        String mainLessonId = parts[0];
+        String completedSubLessonNumber = parts[1];
+
+        // For first sub-lesson completed, prepare to unlock the second
+        if (completedSubLessonNumber.equals("1")) {
+            markLessonAsCompleted(mainLessonId + ".2", 0);
+        }
+        // For second sub-lesson completed, prepare to unlock the third
+        else if (completedSubLessonNumber.equals("2")) {
+            markLessonAsCompleted(mainLessonId + ".3", 0);
+        }
+    }
+
+    public int getLessonScore(String lessonId) {
+        return dbHelper.getLessonScore(lessonId);
+    }
+
     // Helper method to get the previous lesson ID
     private String getPreviousLessonId(String currentId) {
         if (currentId == null) return null;
@@ -124,7 +143,6 @@ public class LessonProgressManager {
 
     /**
      * Gets the parent lesson ID for a sub-lesson
-     * Example: For "L3.2", returns "L3"
      */
     public String getParentLessonId(String subLessonId) {
         if (subLessonId == null || !subLessonId.contains(".")) {
@@ -136,7 +154,6 @@ public class LessonProgressManager {
 
     /**
      * Gets the sub-lesson number for a sub-lesson ID
-     * Example: For "L3.2", returns "2"
      */
     public String getSubLessonNumber(String subLessonId) {
         if (subLessonId == null || !subLessonId.contains(".")) {

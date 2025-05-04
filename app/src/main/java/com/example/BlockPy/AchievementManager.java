@@ -13,7 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AchievementManager {
@@ -22,8 +24,10 @@ public class AchievementManager {
 
     // Map of lesson IDs to their achievement titles
     private static final Map<String, String> ACHIEVEMENT_TITLES = new HashMap<>();
+    private static final Map<String, Integer> ACHIEVEMENT_ICONS = new HashMap<>();
 
     static {
+        // Main lesson achievements
         ACHIEVEMENT_TITLES.put("L1", "Python Explorer");
         ACHIEVEMENT_TITLES.put("L2", "Print Punisher");
         ACHIEVEMENT_TITLES.put("L3", "Variable Virtuoso");
@@ -32,68 +36,30 @@ public class AchievementManager {
         ACHIEVEMENT_TITLES.put("L6", "Loop Legend");
         ACHIEVEMENT_TITLES.put("L7", "Array Ace");
 
-        // Sub-lesson achievements (for future use)
+        // Sub-lesson achievements
         ACHIEVEMENT_TITLES.put("L1.1", "Python Beginner");
         ACHIEVEMENT_TITLES.put("L1.2", "Program Builder");
         ACHIEVEMENT_TITLES.put("L1.3", "Python Helper");
-
         ACHIEVEMENT_TITLES.put("L2.1", "Python Speaker");
         ACHIEVEMENT_TITLES.put("L2.2", "Word Printer");
         ACHIEVEMENT_TITLES.put("L2.3", "Number Printer");
 
-        ACHIEVEMENT_TITLES.put("L3.1", "Box Master");
-        ACHIEVEMENT_TITLES.put("L3.2", "Name Giver");
-        ACHIEVEMENT_TITLES.put("L3.3", "Value Changer");
+        // Achievement Icons
+        ACHIEVEMENT_ICONS.put("L1", R.drawable.achievement_intro);
+        ACHIEVEMENT_ICONS.put("L2", R.drawable.achievement_print);
+        ACHIEVEMENT_ICONS.put("L3", R.drawable.achievement_variable);
+        ACHIEVEMENT_ICONS.put("L4", R.drawable.achievement_operation);
+        ACHIEVEMENT_ICONS.put("L5", R.drawable.achievement_condition);
+        ACHIEVEMENT_ICONS.put("L6", R.drawable.achievement_loop);
+        ACHIEVEMENT_ICONS.put("L7", R.drawable.achievement_array);
 
-        ACHIEVEMENT_TITLES.put("L4.1", "Addition Ace");
-        ACHIEVEMENT_TITLES.put("L4.2", "Subtraction Star");
-        ACHIEVEMENT_TITLES.put("L4.3", "Comparison King");
-
-        ACHIEVEMENT_TITLES.put("L5.1", "Choice Champion");
-        ACHIEVEMENT_TITLES.put("L5.2", "If-Then Expert");
-        ACHIEVEMENT_TITLES.put("L5.3", "Question Answerer");
-
-        ACHIEVEMENT_TITLES.put("L6.1", "Repeat Master");
-        ACHIEVEMENT_TITLES.put("L6.2", "Count Captain");
-        ACHIEVEMENT_TITLES.put("L6.3", "Loop Navigator");
-
-        ACHIEVEMENT_TITLES.put("L7.1", "Basket Builder");
-        ACHIEVEMENT_TITLES.put("L7.2", "List Editor");
-        ACHIEVEMENT_TITLES.put("L7.3", "Item Finder");
-    }
-
-    // Map of lesson IDs to their achievement icons (resource IDs)
-    private static final Map<String, Integer> ACHIEVEMENT_ICONS = new HashMap<>();
-
-    static {
-        // Updated with specific icons for each lesson
-        int introIcon = R.drawable.achievement_print;
-        int printIcon = R.drawable.achievement_print;
-        int variableIcon = R.drawable.achievement_variable;
-        int operationIcon = R.drawable.achievement_condition;
-        int conditionalIcon = R.drawable.achievement_operation;
-        int loopsIcon = R.drawable.achievement_loop;
-        int arrayIcon = R.drawable.achievement_array;
-
-        // Main lesson achievements
-        ACHIEVEMENT_ICONS.put("L1", introIcon);
-        ACHIEVEMENT_ICONS.put("L2", printIcon);
-        ACHIEVEMENT_ICONS.put("L3", variableIcon);
-        ACHIEVEMENT_ICONS.put("L4", operationIcon);
-        ACHIEVEMENT_ICONS.put("L5", conditionalIcon);
-        ACHIEVEMENT_ICONS.put("L6", loopsIcon);
-        ACHIEVEMENT_ICONS.put("L7", arrayIcon);
-
-        // Sub-lesson achievements use the same icons as their parents
-        for (int i = 1; i <= 3; i++) {
-            ACHIEVEMENT_ICONS.put("L1." + i, introIcon);
-            ACHIEVEMENT_ICONS.put("L2." + i, printIcon);
-            ACHIEVEMENT_ICONS.put("L3." + i, variableIcon);
-            ACHIEVEMENT_ICONS.put("L4." + i, operationIcon);
-            ACHIEVEMENT_ICONS.put("L5." + i, conditionalIcon);
-            ACHIEVEMENT_ICONS.put("L6." + i, loopsIcon);
-            ACHIEVEMENT_ICONS.put("L7." + i, arrayIcon);
-        }
+        // Sub-lesson icons use the same icons as their parent lessons
+        ACHIEVEMENT_ICONS.put("L1.1", R.drawable.achievement_intro);
+        ACHIEVEMENT_ICONS.put("L1.2", R.drawable.achievement_intro);
+        ACHIEVEMENT_ICONS.put("L1.3", R.drawable.achievement_intro);
+        ACHIEVEMENT_ICONS.put("L2.1", R.drawable.achievement_print);
+        ACHIEVEMENT_ICONS.put("L2.2", R.drawable.achievement_print);
+        ACHIEVEMENT_ICONS.put("L2.3", R.drawable.achievement_print);
     }
 
     private Context context;
@@ -172,5 +138,43 @@ public class AchievementManager {
      */
     public int getAchievementsEarnedCount() {
         return storage.getEarnedAchievementCount();
+    }
+
+    // Method to get all earned achievements with details
+    public List<AchievementItem> getEarnedAchievements() {
+        List<AchievementItem> earnedAchievements = new ArrayList<>();
+
+        // Get all earned achievement IDs
+        for (String achievementId : storage.getEarnedAchievements()) {
+            String title = ACHIEVEMENT_TITLES.get(achievementId);
+            Integer iconResourceId = ACHIEVEMENT_ICONS.get(achievementId);
+
+            if (title != null && iconResourceId != null) {
+                earnedAchievements.add(new AchievementItem(
+                        achievementId,
+                        title,
+                        iconResourceId
+                ));
+            }
+        }
+
+        return earnedAchievements;
+    }
+
+    // Achievement Item class to represent individual achievements
+    public static class AchievementItem {
+        private String id;
+        private String title;
+        private int iconResourceId;
+
+        public AchievementItem(String id, String title, int iconResourceId) {
+            this.id = id;
+            this.title = title;
+            this.iconResourceId = iconResourceId;
+        }
+
+        public String getId() { return id; }
+        public String getTitle() { return title; }
+        public int getIconResourceId() { return iconResourceId; }
     }
 }

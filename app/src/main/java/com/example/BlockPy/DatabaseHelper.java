@@ -10,7 +10,7 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
     private static final String DATABASE_NAME = "blockpy.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // Increment version to trigger onUpgrade
 
     // Table name
     public static final String TABLE_LESSONS = "lessons";
@@ -20,13 +20,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_COMPLETED = "completed";
     public static final String COLUMN_SCORE = "score";
     public static final String COLUMN_COMPLETION_DATE = "completion_date";
+    public static final String COLUMN_IS_MAIN_LESSON = "is_main_lesson"; // New column
 
     // Create table statement
     private static final String CREATE_TABLE_LESSONS = "CREATE TABLE " + TABLE_LESSONS + "("
             + COLUMN_ID + " TEXT PRIMARY KEY,"
             + COLUMN_COMPLETED + " INTEGER DEFAULT 0,"
             + COLUMN_SCORE + " INTEGER DEFAULT 0,"
-            + COLUMN_COMPLETION_DATE + " TEXT DEFAULT NULL"
+            + COLUMN_COMPLETION_DATE + " TEXT DEFAULT NULL,"
+            + COLUMN_IS_MAIN_LESSON + " INTEGER DEFAULT 1" // 1 for main lesson, 0 for sub-lesson
             + ")";
 
     public DatabaseHelper(Context context) {
@@ -37,31 +39,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_LESSONS);
         // Initialize with all lessons as not completed
-        initializeLesson(db, "L1"); // First lesson automatically unlocked
-        initializeLesson(db, "L2");
-        initializeLesson(db, "L3");
-        initializeLesson(db, "L4");
-        initializeLesson(db, "L5");
+        initializeLesson(db, "L1", true); // First lesson automatically unlocked, main lesson
+        initializeLesson(db, "L2", true);
+        initializeLesson(db, "L3", true);
+        initializeLesson(db, "L4", true);
+        initializeLesson(db, "L5", true);
+
+        // Initialize sub-lessons
+        initializeLesson(db, "L1.1", false);
+        initializeLesson(db, "L1.2", false);
+        initializeLesson(db, "L1.3", false);
     }
 
-    private void initializeLesson(SQLiteDatabase db, String lessonId) {
+    private void initializeLesson(SQLiteDatabase db, String lessonId, boolean isMainLesson) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, lessonId);
         values.put(COLUMN_COMPLETED, 0); // 0 = not completed
         values.put(COLUMN_SCORE, 0);
+        values.put(COLUMN_IS_MAIN_LESSON, isMainLesson ? 1 : 0);
         db.insert(TABLE_LESSONS, null, values);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
+        // Upgrade strategy: drop and recreate
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LESSONS);
-        // Create tables again
         onCreate(db);
     }
 
-    // Mark a lesson as completed
-    // In DatabaseHelper.java
     public boolean markLessonAsCompleted(String lessonId, int score) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -82,7 +87,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return rowsAffected > 0;
     }
-    // Check if a lesson is completed
+
     public boolean isLessonCompleted(String lessonId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_LESSONS,
@@ -101,7 +106,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return completed;
     }
 
-    // Get the score for a completed lesson
     public int getLessonScore(String lessonId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_LESSONS,
@@ -118,5 +122,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return score;
+    }
+
+    /**
+     * Check if a lesson is a main lesson or sub-lesson
+     */
+    public boolean isMainLesson(String lessonId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_LESSONS,
+                new String[]{COLUMN_IS_MAIN_LESSON},
+                COLUMN_ID + " = ?",
+                new String[]{lessonId},
+                null, null, null);
+
+        boolean isMainLesson = true; // Default to true
+        if (cursor != null && cursor.moveToFirst()) {
+            isMainLesson = cursor.getInt(0) == 1;
+            cursor.close();
+        }
+        db.close();
+
+        return isMainLesson;
     }
 }

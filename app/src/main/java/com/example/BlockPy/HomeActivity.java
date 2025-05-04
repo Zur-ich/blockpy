@@ -29,9 +29,15 @@ public class HomeActivity extends AppCompatActivity {
     // Map to store which parent lessons have been expanded to show sub-lessons
     private Map<String, Boolean> expandedLessons = new HashMap<>();
 
+    // Achievement-related field
+    private AchievementManager achievementManager;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // Initialize achievement manager
+        achievementManager = new AchievementManager(this);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -40,6 +46,12 @@ public class HomeActivity extends AppCompatActivity {
 
         lessonRecyclerView = findViewById(R.id.lessonRecyclerView);
         initializeRecyclerView();
+
+        // Add achievements button click listener
+        findViewById(R.id.achievements_button).setOnClickListener(v -> {
+            AchievementsDialog achievementsDialog = new AchievementsDialog(this);
+            achievementsDialog.show();
+        });
 
         loadLessons();
         setupLessonList();
@@ -51,7 +63,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    // --- COMPLETE Lesson Data with Sub-Lessons as Separate Cards ---
     private void loadLessons() {
         allLessonItems = new ArrayList<>();
 
@@ -65,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
                 R.drawable.lesson_bg_red,
                 "Python Explorer!",
                 0, // noSound
-                createQuestions1()
+                createQuestionsL1()
         );
 
         // Add main lesson
@@ -86,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
                 R.drawable.lesson_bg_blue,
                 "Printing Master!",
                 0, // noSound
-                createQuestions2()
+                createQuestionsL2()
         );
 
         // Add main lesson
@@ -107,7 +118,7 @@ public class HomeActivity extends AppCompatActivity {
                 R.drawable.lesson_bg_green,
                 "Variable Virtuoso!",
                 0, // noSound
-                createQuestions3()
+                createQuestionsL3()
         );
 
         // Add main lesson
@@ -128,7 +139,7 @@ public class HomeActivity extends AppCompatActivity {
                 R.drawable.lesson_bg_yellow,
                 "Math Whiz!",
                 0, // noSound
-                createQuestions4()
+                createQuestionsL4()
         );
 
         // Add main lesson
@@ -149,7 +160,7 @@ public class HomeActivity extends AppCompatActivity {
                 R.drawable.lesson_bg_orange,
                 "Decision Master!",
                 0, // noSound
-                createQuestions5()
+                createQuestionsL5()
         );
 
         // Add main lesson
@@ -170,7 +181,7 @@ public class HomeActivity extends AppCompatActivity {
                 R.drawable.lesson_bg_red,
                 "Loop Master!",
                 0, // noSound
-                createQuestions6()
+                createQuestionsL6()
         );
 
         // Add main lesson
@@ -191,7 +202,7 @@ public class HomeActivity extends AppCompatActivity {
                 R.drawable.lesson_bg_blue,
                 "List Pro!",
                 0, // noSound
-                createQuestions7()
+                createQuestionsL7()
         );
 
         // Add main lesson
@@ -233,79 +244,146 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    // Helper methods to create questions for each lesson
-    private List<Question> createQuestions1() {
+    // Setup the lesson list
+    private void setupLessonList() {
+        LessonListAdapter adapter = new LessonListAdapter(visibleLessonItems);
+        lessonRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Update visible lessons based on expanded state
+        updateVisibleLessonItems();
+
+        // Create a fresh adapter to ensure updated data
+        LessonListAdapter adapter = new LessonListAdapter(visibleLessonItems);
+        lessonRecyclerView.setAdapter(adapter);
+
+        // Add detailed logging to track lesson unlock status
+        Log.d("HomeActivity", "onResume: Refreshing lesson adapter");
+        LessonProgressManager progressMgr = new LessonProgressManager(this);
+
+        for (LessonItem item : allLessonItems) {
+            if (!item.isSubLesson()) {
+                String lessonId = item.getLesson().getId();
+                boolean isCompleted = progressMgr.isLessonCompleted(lessonId);
+                boolean isUnlocked = progressMgr.isLessonUnlocked(lessonId);
+                Log.d("HomeActivity", "Lesson " + lessonId +
+                        " - Completed: " + isCompleted +
+                        ", Unlocked: " + isUnlocked);
+            }
+        }
+    }
+
+    // Question creation methods
+    private List<Question> createQuestionsL1() {
         List<Question> questions = new ArrayList<>();
-        questions.add(new Question("What kind of animal is Python named after?", List.of("Bird", "Snake", "Fish"), 1));
-        questions.add(new Question("What does a programmer create?", List.of("Food", "Computer Programs", "Books"), 1));
-        questions.add(new Question("What can Python help us do?", List.of("Swim Fast", "Solve Problems", "Fly"), 1));
-        questions.add(new Question("Python is easy to:", List.of("Eat", "Read", "Throw"), 1));
-        questions.add(new Question("Python was created in:", List.of("2020", "1991", "1800"), 1));
+        questions.add(new Question("What kind of animal is Python named after?",
+                List.of("Bird", "Snake", "Fish"), 1));
+        questions.add(new Question("What does a programmer create?",
+                List.of("Food", "Computer Programs", "Books"), 1));
+        questions.add(new Question("What can Python help us do?",
+                List.of("Swim Fast", "Solve Problems", "Fly"), 1));
+        questions.add(new Question("Python is easy to:",
+                List.of("Eat", "Read", "Throw"), 1));
+        questions.add(new Question("Python was created in:",
+                List.of("2020", "1991", "1800"), 1));
         return questions;
     }
 
-    // Other createQuestions methods omitted for brevity...
-    private List<Question> createQuestions2() {
+    private List<Question> createQuestionsL2() {
         List<Question> questions = new ArrayList<>();
-        questions.add(new Question("What command makes Python show text?", List.of("hide()", "print()", "talk()"), 1));
-        questions.add(new Question("What goes around words in print()?", List.of("[ ]", "\" \"", "( )"), 1));
-        questions.add(new Question("Can print() show numbers?", List.of("Yes", "No", "Maybe"), 0));
-        questions.add(new Question("What does print(\"Hello\") do?", List.of("Says Hello", "Shows Hello", "Nothing"), 1));
-        questions.add(new Question("What appears after print(5+3)?", List.of("5+3", "8", "Error"), 1));
+        questions.add(new Question("What command shows text in Python?",
+                List.of("show()", "print()", "display()"), 1));
+        questions.add(new Question("Can print() show multiple things?",
+                List.of("Yes", "No", "Only in special cases"), 0));
+        questions.add(new Question("print(5 + 3) will display:",
+                List.of("5 + 3", "8", "Error"), 1));
+        questions.add(new Question("How do you print text in Python?",
+                List.of("print[Hello]", "print(Hello)", "print{Hello}"), 1));
+        questions.add(new Question("What happens with print()?",
+                List.of("Saves text", "Shows text", "Deletes text"), 1));
         return questions;
     }
 
-    private List<Question> createQuestions3() {
+    private List<Question> createQuestionsL3() {
         List<Question> questions = new ArrayList<>();
-        questions.add(new Question("What is a variable like?", List.of("A Cloud", "A Labeled Box", "A River"), 1));
-        questions.add(new Question("If 'box = Banana', what is in the box?", List.of("Apple", "Banana", "Grapes"), 1));
-        questions.add(new Question("Can a variable box hold different things?", List.of("Yes", "No", "Only Toys"), 0));
-        questions.add(new Question("What does the '=' sign do?", List.of("Compares", "Puts In", "Takes Out"), 1));
-        questions.add(new Question("If 'age = 10' then age + 2 equals?", List.of("10", "12", "Age2"), 1));
+        questions.add(new Question("What is a variable?",
+                List.of("A computer", "A storage container", "A type of math"), 1));
+        questions.add(new Question("How do you create a variable?",
+                List.of("var x", "x = value", "create x"), 1));
+        questions.add(new Question("Can a variable's value change?",
+                List.of("No", "Yes", "Only once"), 1));
+        questions.add(new Question("x = 10, then x = 20. What is x now?",
+                List.of("10", "20", "1020"), 1));
+        questions.add(new Question("Variables can store:",
+                List.of("Only numbers", "Only text", "Numbers, text, and more"), 2));
         return questions;
     }
 
-    private List<Question> createQuestions4() {
+    private List<Question> createQuestionsL4() {
         List<Question> questions = new ArrayList<>();
-        questions.add(new Question("What does '+' do?", List.of("Take Away", "Count", "Add Together"), 2));
-        questions.add(new Question("What is 2 + 3?", List.of("4", "5", "6"), 1));
-        questions.add(new Question("What does '-' do?", List.of("Add", "Take Away", "Bigger"), 1));
-        questions.add(new Question("What does '>' mean?", List.of("Less than", "Equal to", "Greater than"), 2));
-        questions.add(new Question("2 apples + 2 more = ?", List.of("2", "3", "4"), 2));
+        questions.add(new Question("What does + do?",
+                List.of("Subtract", "Add", "Multiply"), 1));
+        questions.add(new Question("How do you divide?",
+                List.of("//", "/", "%"), 1));
+        questions.add(new Question("What is 10 % 3?",
+                List.of("3", "1", "0"), 1));
+        questions.add(new Question("Which compares if equal?",
+                List.of("=", "==", "==="), 1));
+        questions.add(new Question("5 > 3 returns:",
+                List.of("5", "True", "False"), 1));
         return questions;
     }
 
-    private List<Question> createQuestions5() {
+    private List<Question> createQuestionsL5() {
         List<Question> questions = new ArrayList<>();
-        questions.add(new Question("What do conditionals help us do?", List.of("Jump", "Make Decisions", "Print"), 1));
-        questions.add(new Question("Which symbol means 'equal to'?", List.of("=", "==", "!="), 1));
-        questions.add(new Question("What does 'elif' stand for?", List.of("Else", "Else If", "End Life"), 1));
-        questions.add(new Question("When does code in an 'if' run?", List.of("Always", "When condition is True", "Never"), 1));
-        questions.add(new Question("Can we nest if statements?", List.of("Yes", "No", "Maybe"), 0));
+        questions.add(new Question("What does an if statement do?",
+                List.of("Repeat code", "Make decisions", "Draw graphics"), 1));
+        questions.add(new Question("Conditions return:",
+                List.of("Words", "Numbers", "True/False"), 2));
+        questions.add(new Question("else: is used when:",
+                List.of("First condition", "No conditions are True", "Always"), 1));
+        questions.add(new Question("Can conditions be combined?",
+                List.of("No", "Yes", "Only sometimes"), 1));
+        questions.add(new Question("Which checks multiple conditions?",
+                List.of("if-then", "if-else", "elif"), 2));
         return questions;
     }
 
-    private List<Question> createQuestions6() {
+    private List<Question> createQuestionsL6() {
         List<Question> questions = new ArrayList<>();
-        questions.add(new Question("What does a loop do?", List.of("Stop", "Go Fast", "Repeat"), 2));
-        questions.add(new Question("'Clap 3 times', how many claps?", List.of("1", "2", "3"), 2));
-        questions.add(new Question("Which word means 'repeat'?", List.of("End", "Loop", "Start"), 1));
-        questions.add(new Question("For loops can count...", List.of("Backward only", "Forward only", "Both ways"), 2));
-        questions.add(new Question("Loop is like singing...", List.of("Once", "Over & Over", "Silently"), 1));
+        questions.add(new Question("What does a loop do?",
+                List.of("Stop", "Go Fast", "Repeat"), 2));
+        questions.add(new Question("'Clap 3 times', how many claps?",
+                List.of("1", "2", "3"), 2));
+        questions.add(new Question("Which word means 'repeat'?",
+                List.of("End", "Loop", "Start"), 1));
+        questions.add(new Question("For loops can count...",
+                List.of("Backward only", "Forward only", "Both ways"), 2));
+        questions.add(new Question("Loop is like singing...",
+                List.of("Once", "Over & Over", "Silently"), 1));
         return questions;
     }
 
-    private List<Question> createQuestions7() {
+    private List<Question> createQuestionsL7() {
         List<Question> questions = new ArrayList<>();
-        questions.add(new Question("What is a list like?", List.of("One thing", "Things in order", "Messy pile"), 1));
-        questions.add(new Question("[Car,Ball,Doll], first toy?", List.of("Ball", "Doll", "Car"), 2));
-        questions.add(new Question("Lists can hold different types?", List.of("Yes", "No", "Only numbers"), 0));
-        questions.add(new Question("Shape of list brackets?", List.of("( )", "{ }", "[ ]"), 2));
-        questions.add(new Question("Which adds to a list?", List.of("append()", "remove()", "find()"), 0));
+        questions.add(new Question("What is a list like?",
+                List.of("One thing", "Things in order", "Messy pile"), 1));
+        questions.add(new Question("[Car,Ball,Doll], first toy?",
+                List.of("Ball", "Doll", "Car"), 2));
+        questions.add(new Question("Lists can hold different types?",
+                List.of("Yes", "No", "Only numbers"), 0));
+        questions.add(new Question("Shape of list brackets?",
+                List.of("( )", "{ }", "[ ]"), 2));
+        questions.add(new Question("Which adds to a list?",
+                List.of("append()", "remove()", "find()"), 0));
         return questions;
     }
 
-    // Add this inner class to represent lesson items (both main lessons and sub-lessons)
+    // Nested class for lesson items
     public static class LessonItem {
         private Lesson lesson;
         private String subtitle;
@@ -340,7 +418,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    // Add this custom adapter class
+    // Lesson List Adapter
     private class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private static final int VIEW_TYPE_MAIN_LESSON = 0;
         private static final int VIEW_TYPE_SUB_LESSON = 1;
@@ -378,7 +456,7 @@ public class HomeActivity extends AppCompatActivity {
             Lesson lesson = item.getLesson();
 
             if (holder instanceof MainLessonViewHolder) {
-                // Main lesson
+                // Main lesson binding logic
                 MainLessonViewHolder mainHolder = (MainLessonViewHolder) holder;
 
                 mainHolder.lessonIcon.setImageResource(lesson.getIconResourceId());
@@ -473,39 +551,16 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
             } else if (holder instanceof SubLessonViewHolder) {
-                // Sub-lesson
+                // Sub-lesson binding logic
                 SubLessonViewHolder subHolder = (SubLessonViewHolder) holder;
 
                 subHolder.subLessonTitle.setText(item.getSubtitle());
 
                 // Check if this sub-lesson is unlocked
-                // Note: Different unlocking logic - first sub-lesson unlocks when main lesson is completed
                 String mainLessonId = item.getMainLessonId();
                 String subLessonId = item.getSubLessonId();
 
-                boolean isUnlocked;
-
-                // Check if main lesson is completed
-                boolean isMainLessonCompleted = progressManager.isLessonCompleted(mainLessonId);
-
-                // First sub-lesson is unlocked when main lesson is completed
-                if (subLessonId != null && subLessonId.endsWith(".1") && isMainLessonCompleted) {
-                    isUnlocked = true;
-                }
-
-                // Second sub-lesson is unlocked when first sub-lesson is completed
-                else if (subLessonId != null && subLessonId.endsWith(".2")) {
-                    String firstSubLessonId = subLessonId.substring(0, subLessonId.length() - 1) + "1";
-                    isUnlocked = progressManager.isLessonCompleted(firstSubLessonId);
-                }
-
-                // Third sub-lesson is unlocked when second sub-lesson is completed
-                else if (subLessonId != null && subLessonId.endsWith(".3")) {
-                    String secondSubLessonId = subLessonId.substring(0, subLessonId.length() - 1) + "2";
-                    isUnlocked = progressManager.isLessonCompleted(secondSubLessonId);
-                } else {
-                    isUnlocked = false;
-                }
+                boolean isUnlocked = progressManager.isSubLessonUnlocked(subLessonId);
 
                 // Set the lock/unlock icon
                 if (isUnlocked) {
@@ -563,15 +618,9 @@ public class HomeActivity extends AppCompatActivity {
                         intent.putExtra("LESSON_ID", subLessonId);
                         startActivity(intent);
                     } else {
-                        if (isMainLessonCompleted) {
-                            Toast.makeText(HomeActivity.this,
-                                    "Complete previous sub-lessons to unlock!",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(HomeActivity.this,
-                                    "Complete the main lesson first to unlock this sub-lesson!",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(HomeActivity.this,
+                                "Complete previous sub-lessons to unlock!",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -582,6 +631,7 @@ public class HomeActivity extends AppCompatActivity {
             return lessonItems.size();
         }
 
+        // ViewHolder classes
         public class MainLessonViewHolder extends RecyclerView.ViewHolder {
             ImageView lessonIcon;
             ImageView lockIcon;
@@ -607,39 +657,6 @@ public class HomeActivity extends AppCompatActivity {
                 super(itemView);
                 subLessonTitle = itemView.findViewById(R.id.sub_lesson_title);
                 lockIcon = itemView.findViewById(R.id.sub_lesson_lock_icon);
-            }
-        }
-    }
-
-    // Setup the lesson list
-    private void setupLessonList() {
-        LessonListAdapter adapter = new LessonListAdapter(visibleLessonItems);
-        lessonRecyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Update visible lessons based on expanded state
-        updateVisibleLessonItems();
-
-        // Create a fresh adapter to ensure updated data
-        LessonListAdapter adapter = new LessonListAdapter(visibleLessonItems);
-        lessonRecyclerView.setAdapter(adapter);
-
-        // Add detailed logging to track lesson unlock status
-        Log.d("HomeActivity", "onResume: Refreshing lesson adapter");
-        LessonProgressManager progressMgr = new LessonProgressManager(this);
-
-        for (LessonItem item : allLessonItems) {
-            if (!item.isSubLesson()) {
-                String lessonId = item.getLesson().getId();
-                boolean isCompleted = progressMgr.isLessonCompleted(lessonId);
-                boolean isUnlocked = progressMgr.isLessonUnlocked(lessonId);
-                Log.d("HomeActivity", "Lesson " + lessonId +
-                        " - Completed: " + isCompleted +
-                        ", Unlocked: " + isUnlocked);
             }
         }
     }
