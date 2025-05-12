@@ -25,6 +25,7 @@ public class AchievementManager {
     // Map of lesson IDs to their achievement titles
     private static final Map<String, String> ACHIEVEMENT_TITLES = new HashMap<>();
     private static final Map<String, Integer> ACHIEVEMENT_ICONS = new HashMap<>();
+    private static final Map<String, String> ACHIEVEMENT_DESCRIPTIONS = new HashMap<>();
 
     static {
         // Main lesson achievements
@@ -60,6 +61,23 @@ public class AchievementManager {
         ACHIEVEMENT_ICONS.put("L2.1", R.drawable.achievement_print);
         ACHIEVEMENT_ICONS.put("L2.2", R.drawable.achievement_print);
         ACHIEVEMENT_ICONS.put("L2.3", R.drawable.achievement_print);
+
+        // Achievement Descriptions
+        ACHIEVEMENT_DESCRIPTIONS.put("L1", "Welcome to the world of Python programming! Python is a powerful, beginner-friendly language that's used by professional developers, data scientists, and tech enthusiasts around the globe.");
+        ACHIEVEMENT_DESCRIPTIONS.put("L2", "The print() statement is your first step in making Python communicate! It's how you can make your program display text, numbers, and other information.");
+        ACHIEVEMENT_DESCRIPTIONS.put("L3", "Variables are like labeled containers that store information in your program. They allow you to save and reuse data, making your code more flexible and powerful.");
+        ACHIEVEMENT_DESCRIPTIONS.put("L4", "Operations are the actions that transform and combine values in Python. They're essential for calculations, comparisons, and manipulating data.");
+        ACHIEVEMENT_DESCRIPTIONS.put("L5", "Conditions allow your program to make decisions by checking if something is true or false. This is done using if statements, which run code only when certain conditions are met.");
+        ACHIEVEMENT_DESCRIPTIONS.put("L6", "Loops allow you to repeat code multiple times without copy-pasting. They're essential for processing collections of data and automating repetitive tasks.");
+        ACHIEVEMENT_DESCRIPTIONS.put("L7", "Lists in Python (similar to arrays in other languages) are collections of items stored in a single variable. They allow you to store multiple related values together and work with them as a group.");
+        // Sub-lesson descriptions (short, for demo)
+        ACHIEVEMENT_DESCRIPTIONS.put("L1.1", "Python: More Than Just a Snake 🐍");
+        ACHIEVEMENT_DESCRIPTIONS.put("L1.2", "Understanding Computer Programs 💻");
+        ACHIEVEMENT_DESCRIPTIONS.put("L1.3", "How Python Helps Us");
+        ACHIEVEMENT_DESCRIPTIONS.put("L2.1", "Making Python Talk");
+        ACHIEVEMENT_DESCRIPTIONS.put("L2.2", "Print with Words");
+        ACHIEVEMENT_DESCRIPTIONS.put("L2.3", "Print with Numbers");
+        // ... add more as needed ...
     }
 
     private Context context;
@@ -161,20 +179,37 @@ public class AchievementManager {
         return earnedAchievements;
     }
 
+    // Method to get all possible achievements (earned and unearned)
+    public List<AchievementItem> getAllAchievements() {
+        List<AchievementItem> allAchievements = new ArrayList<>();
+        for (Map.Entry<String, String> entry : ACHIEVEMENT_TITLES.entrySet()) {
+            String id = entry.getKey();
+            String title = entry.getValue();
+            Integer iconResourceId = ACHIEVEMENT_ICONS.get(id);
+            if (title != null && iconResourceId != null) {
+                allAchievements.add(new AchievementItem(id, title, iconResourceId));
+            }
+        }
+        return allAchievements;
+    }
+
     // Achievement Item class to represent individual achievements
     public static class AchievementItem {
         private String id;
         private String title;
         private int iconResourceId;
+        private String description;
 
         public AchievementItem(String id, String title, int iconResourceId) {
             this.id = id;
             this.title = title;
             this.iconResourceId = iconResourceId;
+            this.description = ACHIEVEMENT_DESCRIPTIONS.getOrDefault(id, "");
         }
 
         public String getId() { return id; }
         public String getTitle() { return title; }
         public int getIconResourceId() { return iconResourceId; }
+        public String getDescription() { return description; }
     }
 }

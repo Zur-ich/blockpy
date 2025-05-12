@@ -33,66 +33,14 @@ public class LessonProgressManager {
      * Determines if a lesson is unlocked and available to be played
      */
     public boolean isLessonUnlocked(String lessonId) {
-        if (lessonId == null || lessonId.isEmpty()) {
-            return false;
-        }
-
-        // Check if this is a main lesson or sub-lesson
-        if (lessonId.contains(".")) {
-            return isSubLessonUnlocked(lessonId);
-        }
-
-        // First lesson is always unlocked
-        if (lessonId.equals("L1")) {
-            return true;
-        }
-
-        // Check if previous lesson was completed
-        String previousLessonId = getPreviousLessonId(lessonId);
-        return previousLessonId != null && dbHelper.isLessonCompleted(previousLessonId);
+        return true;
     }
 
     /**
-     * Determines if a sub-lesson is unlocked based on the following rules:
-     * - First sub-lesson (X.1): Unlocked if main lesson (X) is completed
-     * - Second sub-lesson (X.2): Unlocked if first sub-lesson (X.1) is completed
-     * - Third sub-lesson (X.3): Unlocked if second sub-lesson (X.2) is completed
+     * Determines if a sub-lesson is unlocked (now always true)
      */
     public boolean isSubLessonUnlocked(String subLessonId) {
-        if (subLessonId == null || subLessonId.isEmpty() || !subLessonId.contains(".")) {
-            return false;
-        }
-
-        // Extract the main lesson ID and sub-lesson number
-        String[] parts = subLessonId.split("\\.");
-        if (parts.length != 2) {
-            return false;
-        }
-
-        String mainLessonId = parts[0];
-        String subLessonNumber = parts[1];
-
-        // Check if main lesson is unlocked first
-        if (!isLessonUnlocked(mainLessonId)) {
-            return false;
-        }
-
-        // First sub-lesson (X.1) is unlocked if main lesson is completed
-        if (subLessonNumber.equals("1")) {
-            return isLessonCompleted(mainLessonId);
-        }
-
-        // Second sub-lesson (X.2) is unlocked if first sub-lesson is completed
-        else if (subLessonNumber.equals("2")) {
-            return isLessonCompleted(mainLessonId + ".1");
-        }
-
-        // Third sub-lesson (X.3) is unlocked if second sub-lesson is completed
-        else if (subLessonNumber.equals("3")) {
-            return isLessonCompleted(mainLessonId + ".2");
-        }
-
-        return false;
+        return true;
     }
 
     /**

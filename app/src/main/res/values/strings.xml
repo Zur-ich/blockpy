@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">BlockPy</string>
-    <string name="main_title">BlockPy Lessons</string>
+    <string name="main_title"></string>
     <string name="lesson_list_description">List of available Python lessons</string>
 </resources>

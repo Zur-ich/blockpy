@@ -70,12 +70,13 @@
                 tools:text="Introduction" />
         </LinearLayout>
 
+        <!-- Added arrow icon -->
         <ImageView
-            android:id="@+id/lock_icon"
+            android:id="@+id/arrow_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            android:src="@drawable/ic_lock"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/arrow_icon"
             app:tint="@color/white"
             tools:ignore="UseAppTint" />
     </LinearLayout>

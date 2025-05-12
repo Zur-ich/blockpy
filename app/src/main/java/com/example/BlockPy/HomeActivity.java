@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         loadLessons();
-        setupLessonList();
+            setupLessonList();
     }
 
     private void initializeRecyclerView() {
@@ -456,12 +456,8 @@ public class HomeActivity extends AppCompatActivity {
             Lesson lesson = item.getLesson();
 
             if (holder instanceof MainLessonViewHolder) {
-                // Main lesson binding logic
                 MainLessonViewHolder mainHolder = (MainLessonViewHolder) holder;
-
                 mainHolder.lessonIcon.setImageResource(lesson.getIconResourceId());
-
-                // Extract the lesson number and title
                 String title = lesson.getTitle();
                 int dotIndex = title.indexOf('.');
                 if (dotIndex > 0 && dotIndex < title.length() - 1) {
@@ -471,20 +467,9 @@ public class HomeActivity extends AppCompatActivity {
                     mainHolder.lessonNumber.setText("");
                     mainHolder.lessonTitle.setText(title);
                 }
-
-                // Set the subtitle
                 mainHolder.lessonSubtitle.setText(item.getSubtitle());
 
-                // Check if the lesson is unlocked
-                boolean isUnlocked = progressManager.isLessonUnlocked(lesson.getId());
-
-                // Set the lock/unlock icon
-                if (isUnlocked) {
-                    mainHolder.lockIcon.setImageResource(R.drawable.ic_unlock);
-                } else {
-                    mainHolder.lockIcon.setImageResource(R.drawable.ic_lock);
-                }
-
+                // Always unlocked: remove lock icon logic
                 // Set background color based on the lesson
                 int lessonNumber;
                 try {
@@ -492,136 +477,72 @@ public class HomeActivity extends AppCompatActivity {
                 } catch (NumberFormatException e) {
                     lessonNumber = 1;
                 }
-
-                // Set background color
                 int backgroundResId;
                 switch ((lessonNumber - 1) % 7) {
-                    case 0: // L1
-                        backgroundResId = R.drawable.lesson_bg_red;
-                        break;
-                    case 1: // L2
-                        backgroundResId = R.drawable.lesson_bg_blue;
-                        break;
-                    case 2: // L3
-                        backgroundResId = R.drawable.lesson_bg_green;
-                        break;
-                    case 3: // L4
-                        backgroundResId = R.drawable.lesson_bg_yellow;
-                        break;
-                    case 4: // L5
-                        backgroundResId = R.drawable.lesson_bg_orange;
-                        break;
-                    case 5: // L6
-                        backgroundResId = R.drawable.lesson_bg_red;
-                        break;
-                    case 6: // L7
-                        backgroundResId = R.drawable.lesson_bg_blue;
-                        break;
-                    default:
-                        backgroundResId = android.R.color.white;
-                        break;
+                    case 0: backgroundResId = R.drawable.lesson_bg_red; break;
+                    case 1: backgroundResId = R.drawable.lesson_bg_blue; break;
+                    case 2: backgroundResId = R.drawable.lesson_bg_green; break;
+                    case 3: backgroundResId = R.drawable.lesson_bg_yellow; break;
+                    case 4: backgroundResId = R.drawable.lesson_bg_orange; break;
+                    case 5: backgroundResId = R.drawable.lesson_bg_red; break;
+                    case 6: backgroundResId = R.drawable.lesson_bg_blue; break;
+                    default: backgroundResId = android.R.color.white; break;
                 }
-
-                // Apply background
                 View lessonContainer = mainHolder.itemView.findViewById(R.id.lesson_container);
                 lessonContainer.setBackground(ContextCompat.getDrawable(mainHolder.itemView.getContext(), backgroundResId));
-
-                // Handle click based on lock status
                 mainHolder.itemView.setOnClickListener(v -> {
-                    if (isUnlocked) {
-                        // Toggle expanded state for this lesson
-                        String lessonId = lesson.getId();
-                        boolean isExpanded = expandedLessons.getOrDefault(lessonId, false);
-                        expandedLessons.put(lessonId, !isExpanded);
-
-                        // Update visible lessons and refresh adapter
-                        updateVisibleLessonItems();
-                        notifyDataSetChanged();
-
-                        // If not expanded, launch the main lesson
-                        if (!isExpanded) {
-                            Intent intent = new Intent(HomeActivity.this, LessonActivity.class);
-                            intent.putExtra("LESSON_ID", lesson.getId());
-                            startActivity(intent);
-                        }
+                    // Always allow click
+                    String lessonId = lesson.getId();
+                    boolean isExpanded = expandedLessons.getOrDefault(lessonId, false);
+                    expandedLessons.put(lessonId, !isExpanded);
+                    int oldSize = visibleLessonItems.size();
+                    updateVisibleLessonItems();
+                    int newSize = visibleLessonItems.size();
+                    if (newSize > oldSize) {
+                        notifyItemRangeInserted(oldSize, newSize - oldSize);
                     } else {
-                        Toast.makeText(HomeActivity.this,
-                                "Complete previous lessons to unlock!",
-                                Toast.LENGTH_SHORT).show();
+                        notifyItemRangeRemoved(newSize, oldSize - newSize);
+                    }
+                    if (!isExpanded) {
+                        Intent intent = new Intent(HomeActivity.this, LessonActivity.class);
+                        intent.putExtra("LESSON_ID", lesson.getId());
+                        startActivity(intent);
+                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    }
+                    if (mainHolder.arrowIcon != null) {
+                        mainHolder.arrowIcon.animate().rotation(isExpanded ? 90 : 0).setDuration(300).start();
                     }
                 });
             } else if (holder instanceof SubLessonViewHolder) {
-                // Sub-lesson binding logic
                 SubLessonViewHolder subHolder = (SubLessonViewHolder) holder;
-
                 subHolder.subLessonTitle.setText(item.getSubtitle());
-
-                // Check if this sub-lesson is unlocked
+                // Always unlocked: remove lock icon logic
                 String mainLessonId = item.getMainLessonId();
-                String subLessonId = item.getSubLessonId();
-
-                boolean isUnlocked = progressManager.isSubLessonUnlocked(subLessonId);
-
-                // Set the lock/unlock icon
-                if (isUnlocked) {
-                    subHolder.lockIcon.setImageResource(R.drawable.ic_unlock);
-                } else {
-                    subHolder.lockIcon.setImageResource(R.drawable.ic_lock);
-                }
-
-                // Set background color (lighter version of main lesson)
                 int lessonNumber;
                 try {
                     lessonNumber = Integer.parseInt(mainLessonId.substring(1));
                 } catch (NumberFormatException e) {
                     lessonNumber = 1;
                 }
-
-                // Set background color
                 int backgroundResId;
                 switch ((lessonNumber - 1) % 7) {
-                    case 0: // L1
-                        backgroundResId = R.drawable.lesson_bg_red_light;
-                        break;
-                    case 1: // L2
-                        backgroundResId = R.drawable.lesson_bg_blue_light;
-                        break;
-                    case 2: // L3
-                        backgroundResId = R.drawable.lesson_bg_green_light;
-                        break;
-                    case 3: // L4
-                        backgroundResId = R.drawable.lesson_bg_yellow_light;
-                        break;
-                    case 4: // L5
-                        backgroundResId = R.drawable.lesson_bg_orange_light;
-                        break;
-                    case 5: // L6
-                        backgroundResId = R.drawable.lesson_bg_red_light;
-                        break;
-                    case 6: // L7
-                        backgroundResId = R.drawable.lesson_bg_blue_light;
-                        break;
-                    default:
-                        backgroundResId = android.R.color.white;
-                        break;
+                    case 0: backgroundResId = R.drawable.lesson_bg_red_light; break;
+                    case 1: backgroundResId = R.drawable.lesson_bg_blue_light; break;
+                    case 2: backgroundResId = R.drawable.lesson_bg_green_light; break;
+                    case 3: backgroundResId = R.drawable.lesson_bg_yellow_light; break;
+                    case 4: backgroundResId = R.drawable.lesson_bg_orange_light; break;
+                    case 5: backgroundResId = R.drawable.lesson_bg_red_light; break;
+                    case 6: backgroundResId = R.drawable.lesson_bg_blue_light; break;
+                    default: backgroundResId = android.R.color.white; break;
                 }
-
-                // Apply background
                 View subLessonContainer = subHolder.itemView.findViewById(R.id.sub_lesson_container);
                 subLessonContainer.setBackground(ContextCompat.getDrawable(subHolder.itemView.getContext(), backgroundResId));
-
-                // Handle click on sub-lesson
                 subHolder.itemView.setOnClickListener(v -> {
-                    if (isUnlocked) {
-                        // Launch the sub-lesson
-                        Intent intent = new Intent(HomeActivity.this, LessonActivity.class);
-                        intent.putExtra("LESSON_ID", subLessonId);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(HomeActivity.this,
-                                "Complete previous sub-lessons to unlock!",
-                                Toast.LENGTH_SHORT).show();
-                    }
+                    // Always allow click
+                    Intent intent = new Intent(HomeActivity.this, LessonActivity.class);
+                    intent.putExtra("LESSON_ID", item.getSubLessonId());
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 });
             }
         }
@@ -634,29 +555,27 @@ public class HomeActivity extends AppCompatActivity {
         // ViewHolder classes
         public class MainLessonViewHolder extends RecyclerView.ViewHolder {
             ImageView lessonIcon;
-            ImageView lockIcon;
             TextView lessonTitle;
             TextView lessonNumber;
             TextView lessonSubtitle;
+            ImageView arrowIcon;
 
             public MainLessonViewHolder(@NonNull View itemView) {
                 super(itemView);
                 lessonIcon = itemView.findViewById(R.id.lesson_icon);
-                lockIcon = itemView.findViewById(R.id.lock_icon);
                 lessonTitle = itemView.findViewById(R.id.lesson_title);
                 lessonNumber = itemView.findViewById(R.id.lesson_number);
                 lessonSubtitle = itemView.findViewById(R.id.lesson_subtitle);
+                arrowIcon = itemView.findViewById(R.id.arrow_icon);
             }
         }
 
         public class SubLessonViewHolder extends RecyclerView.ViewHolder {
             TextView subLessonTitle;
-            ImageView lockIcon;
 
             public SubLessonViewHolder(@NonNull View itemView) {
                 super(itemView);
                 subLessonTitle = itemView.findViewById(R.id.sub_lesson_title);
-                lockIcon = itemView.findViewById(R.id.sub_lesson_lock_icon);
             }
         }
     }

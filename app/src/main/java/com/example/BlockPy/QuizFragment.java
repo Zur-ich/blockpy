@@ -132,7 +132,10 @@ public class QuizFragment extends Fragment {
             return;
         }
 
-        questionTextView.setText(q.getQuestionText());
+        // Add question number to the question text
+        String questionWithNumber = "Question " + (currentQuestionIndex + 1) + ": " + q.getQuestionText();
+        questionTextView.setText(questionWithNumber);
+        
         List<String> opts=q.getOptions();
         Context ctx=getContext();
 

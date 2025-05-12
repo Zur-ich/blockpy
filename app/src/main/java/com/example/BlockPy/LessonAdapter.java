@@ -45,51 +45,24 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.LessonView
         if (lesson != null) {
             holder.lessonTitle.setText(lesson.getTitle());
 
-            // Check if lesson is unlocked
-            boolean isUnlocked = isLessonUnlocked(position);
-
-            // Set the appropriate lock/unlock icon
-            if (isUnlocked) {
-                holder.lessonIcon.setImageResource(R.drawable.ic_unlock);
-            } else {
-                holder.lessonIcon.setImageResource(R.drawable.ic_lock);
-            }
-
+            // Always unlocked
             // Set background drawable based on position
             int backgroundResId;
             switch (position) {
-                case 0: // 1. Print Statement
-                    backgroundResId = R.drawable.lesson_bg_red;
-                    break;
-                case 1: // 2. Variables
-                    backgroundResId = R.drawable.lesson_bg_blue;
-                    break;
-                case 2: // 3. Operations
-                    backgroundResId = R.drawable.lesson_bg_green;
-                    break;
-                case 3: // 4. Loops
-                    backgroundResId = R.drawable.lesson_bg_yellow;
-                    break;
-                case 4: // 5. Array (List)
-                    backgroundResId = R.drawable.lesson_bg_orange;
-                    break;
-                default:
-                    backgroundResId = android.R.color.white;
-                    break;
+                case 0: backgroundResId = R.drawable.lesson_bg_red; break;
+                case 1: backgroundResId = R.drawable.lesson_bg_blue; break;
+                case 2: backgroundResId = R.drawable.lesson_bg_green; break;
+                case 3: backgroundResId = R.drawable.lesson_bg_yellow; break;
+                case 4: backgroundResId = R.drawable.lesson_bg_orange; break;
+                default: backgroundResId = android.R.color.white; break;
             }
-
-            // Get the lesson container inside the item view
             View lessonContainer = holder.itemView.findViewById(R.id.lesson_container);
             lessonContainer.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), backgroundResId));
 
-            // Set click listener with lock check
+            // Always allow click
             holder.itemView.setOnClickListener(v -> {
-                if (isUnlocked) {
-                    if (clickListener != null) {
-                        clickListener.onLessonClick(position);
-                    }
-                } else {
-                    Toast.makeText(context, "Complete previous lessons to unlock!", Toast.LENGTH_SHORT).show();
+                if (clickListener != null) {
+                    clickListener.onLessonClick(position);
                 }
             });
         }
@@ -101,20 +74,10 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.LessonView
     }
 
     /**
-     * Checks if a lesson is unlocked based on position
-     * Lesson 0 is always unlocked, others require previous lesson completion
+     * Checks if a lesson is unlocked (now always true)
      */
     public boolean isLessonUnlocked(int position) {
-        // First lesson is always unlocked
-        if (position == 0) {
-            return true;
-        }
-
-        // Get the lesson ID for the previous position
-        String previousLessonId = "L" + position; // This becomes L1, L2, etc.
-
-        // Check if previous lesson was completed using the same key format as LessonActivity
-        return sharedPreferences.getBoolean("lesson_completed_" + previousLessonId, false);
+        return true;
     }
 
     /**

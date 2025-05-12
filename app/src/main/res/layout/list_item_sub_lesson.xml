@@ -30,14 +30,5 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/white"
             tools:text="Magic Storage Boxes" />
-
-        <ImageView
-            android:id="@+id/sub_lesson_lock_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            android:src="@drawable/ic_lock"
-            app:tint="@color/white"
-            tools:ignore="UseAppTint" />
     </LinearLayout>
 </FrameLayout>
