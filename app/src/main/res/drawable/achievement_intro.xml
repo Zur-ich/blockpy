@@ -1,49 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
 
-    <!-- Python Logo-inspired blue and yellow snakes -->
+    <!-- Enhanced Python Logo-inspired blue and yellow snakes -->
 
-    <!-- Blue snake (top part) -->
+    <!-- Blue snake (top part) with gradient -->
     <path
-        android:fillColor="#4584B6"
-        android:pathData="M12,2C8.14,2 5,3.14 5,5.5V10c0,1.66 0.84,3 2,3c1.19,0 1.85,-1.11 2,-2.26L9,7.3V5.5C9,4.12 10.34,3 12,3s3,1.12 3,2.5v1.8L15,10.74C15.15,11.89 15.81,13 17,13c1.16,0 2,-1.34 2,-3V5.5C19,3.14 15.86,2 12,2z"/>
+        android:pathData="M12,2C8.14,2 5,3.14 5,5.5V10c0,1.66 0.84,3 2,3c1.19,0 1.85,-1.11 2,-2.26L9,7.3V5.5C9,4.12 10.34,3 12,3s3,1.12 3,2.5v1.8L15,10.74C15.15,11.89 15.81,13 17,13c1.16,0 2,-1.34 2,-3V5.5C19,3.14 15.86,2 12,2z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startColor="#4584B6"
+                android:centerColor="#366997"
+                android:endColor="#1E415E"
+                android:type="linear"
+                android:startY="2"
+                android:endY="13" />
+        </aapt:attr>
+    </path>
 
-    <!-- Yellow snake (bottom part) -->
+    <!-- Yellow snake (bottom part) with gradient -->
     <path
-        android:fillColor="#FFD43B"
-        android:pathData="M12,22C15.86,22 19,20.86 19,18.5V14c0,-1.66 -0.84,-3 -2,-3c-1.19,0 -1.85,1.11 -2,2.26L15,16.7v1.8c0,1.38 -1.34,2.5 -3,2.5s-3,-1.12 -3,-2.5v-1.8L9,13.26C8.85,12.11 8.19,11 7,11c-1.16,0 -2,1.34 -2,3v4.5C5,20.86 8.14,22 12,22z"/>
+        android:pathData="M12,22C15.86,22 19,20.86 19,18.5V14c0,-1.66 -0.84,-3 -2,-3c-1.19,0 -1.85,1.11 -2,2.26L15,16.7v1.8c0,1.38 -1.34,2.5 -3,2.5s-3,-1.12 -3,-2.5v-1.8L9,13.26C8.85,12.11 8.19,11 7,11c-1.16,0 -2,1.34 -2,3v4.5C5,20.86 8.14,22 12,22z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startColor="#FFE873"
+                android:centerColor="#FFD43B"
+                android:endColor="#F9C22E"
+                android:type="linear"
+                android:startY="11"
+                android:endY="22" />
+        </aapt:attr>
+    </path>
 
-    <!-- Eyes -->
+    <!-- Glossy highlights on blue snake -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M10,6m-0.75,0a0.75,0.75 0,1 1,1.5 0a0.75,0.75 0,1 1,-1.5 0"/>
+        android:fillAlpha="0.25"
+        android:pathData="M12,3c-1.66,0 -3,1.12 -3,2.5v0.8C10.5,5.7 13,6.5 16,6c0,-0.17 0,-0.33 0,-0.5C16,4.12 13.66,3 12,3z"/>
+
+    <!-- Glossy highlights on yellow snake -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.2"
+        android:pathData="M12,21c1.66,0 3,-1.12 3,-2.5v-0.8C13.5,18.3 11,17.5 8,18c0,0.17 0,0.33 0,0.5C8,19.88 10.34,21 12,21z"/>
+
+    <!-- Eyes with highlights -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M10,6m-0.9,0a0.9,0.9 0,1 1,1.8 0a0.9,0.9 0,1 1,-1.8 0"/>
+    <path
+        android:fillColor="#000000"
+        android:pathData="M10,6m-0.5,0a0.5,0.5 0,1 1,1 0a0.5,0.5 0,1 1,-1 0"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.7"
+        android:pathData="M9.7,5.7m-0.25,0a0.25,0.25 0,1 1,0.5 0a0.25,0.25 0,1 1,-0.5 0"/>
 
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M14,18m-0.75,0a0.75,0.75 0,1 1,1.5 0a0.75,0.75 0,1 1,-1.5 0"/>
-
-    <!-- Python scales/pattern on the snakes -->
+        android:pathData="M14,18m-0.9,0a0.9,0.9 0,1 1,1.8 0a0.9,0.9 0,1 1,-1.8 0"/>
     <path
-        android:strokeColor="#3771A1"
-        android:strokeWidth="0.5"
-        android:pathData="M10,4.5c0.5,0 0.5,1 0,1c-0.5,0 -0.5,-1 0,-1"/>
+        android:fillColor="#000000"
+        android:pathData="M14,18m-0.5,0a0.5,0.5 0,1 1,1 0a0.5,0.5 0,1 1,-1 0"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.7"
+        android:pathData="M13.7,17.7m-0.25,0a0.25,0.25 0,1 1,0.5 0a0.25,0.25 0,1 1,-0.5 0"/>
+
+    <!-- Python scales/pattern on the snakes - enhanced -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeAlpha="0.3"
+        android:strokeWidth="0.6"
+        android:strokeLineCap="round"
+        android:pathData="M7,5.5c0.5,-0.5 1.5,-1 3,-1.2"/>
 
     <path
-        android:strokeColor="#3771A1"
-        android:strokeWidth="0.5"
-        android:pathData="M12,4.5c0.5,0 0.5,1 0,1c-0.5,0 -0.5,-1 0,-1"/>
+        android:strokeColor="#FFFFFF"
+        android:strokeAlpha="0.3"
+        android:strokeWidth="0.6"
+        android:strokeLineCap="round"
+        android:pathData="M17,18.5c-0.5,0.5 -1.5,1 -3,1.2"/>
 
     <path
-        android:strokeColor="#ECC236"
-        android:strokeWidth="0.5"
-        android:pathData="M12,19.5c0.5,0 0.5,1 0,1c-0.5,0 -0.5,-1 0,-1"/>
+        android:strokeColor="#000000"
+        android:strokeAlpha="0.15"
+        android:strokeWidth="0.6"
+        android:strokeLineCap="round"
+        android:pathData="M11,5c0.5,0 1,0 2,0"/>
 
     <path
-        android:strokeColor="#ECC236"
-        android:strokeWidth="0.5"
-        android:pathData="M14,19.5c0.5,0 0.5,1 0,1c-0.5,0 -0.5,-1 0,-1"/>
+        android:strokeColor="#000000"
+        android:strokeAlpha="0.15"
+        android:strokeWidth="0.6"
+        android:strokeLineCap="round"
+        android:pathData="M11,19c0.5,0 1,0 2,0"/>
 </vector>
+

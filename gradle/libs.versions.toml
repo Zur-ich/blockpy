@@ -16,7 +16,6 @@ appcompat = "1.7.0"
 recyclerview = "1.4.0"
 cardview = "1.0.0"
 supportAnnotations = "28.0.0"
-coreSplashscreen = "1.0.1"
 annotation = "1.9.1"
 legacySupportV4 = "1.0.0"
 material = "1.12.0"
@@ -49,7 +48,6 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 support-annotations = { group = "com.android.support", name = "support-annotations", version.ref = "supportAnnotations" }
-androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
