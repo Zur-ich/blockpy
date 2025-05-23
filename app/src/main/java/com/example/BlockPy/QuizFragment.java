@@ -22,6 +22,20 @@ import java.io.Serializable;
 import java.util.*;
 import com.example.BlockPy.R;
 
+/**
+ * QuizFragment handles the display and interaction with quiz questions in the BlockPy app.
+ *
+ * This fragment is responsible for:
+ * - Displaying quiz questions to the user
+ * - Managing answer selection and validation
+ * - Tracking and calculating quiz scores
+ * - Providing feedback on correct/incorrect answers
+ * - Handling navigation between quiz questions
+ * - Managing the completion of quizzes
+ *
+ * The fragment displays questions with multiple-choice options and uses a gradient
+ * background matching the app's visual style.
+ */
 public class QuizFragment extends Fragment {
     private static final String TAG="QuizFragment";
     private static final String ARG_QUESTIONS="questionsList";
@@ -302,3 +316,4 @@ public class QuizFragment extends Fragment {
     }
 
 }
+

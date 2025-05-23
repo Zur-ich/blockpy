@@ -4,6 +4,19 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Lesson represents a learning unit in the BlockPy application.
+ *
+ * This class serves as a data model that stores all information related to a lesson:
+ * - Basic identification (ID and title)
+ * - Content (description, audio)
+ * - Visual presentation elements (icon, background color)
+ * - Success feedback (message and sound)
+ * - Associated quiz questions
+ *
+ * Lessons are the primary educational components of the app, containing
+ * conceptual material that users need to learn before taking quizzes.
+ */
 public class Lesson implements Serializable {
     private String id; private String title; private int iconResourceId;
     private String conceptDescription; private int instructionAudioId;
@@ -32,3 +45,4 @@ public class Lesson implements Serializable {
     public int getSuccessSoundId(){return successSoundId;}
     public List<Question> getQuestions(){return questions;}
 }
+

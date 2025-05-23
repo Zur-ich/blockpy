@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="24dp"
-    android:background="#F5F7FF"> <!-- Light blue-gray background to match quiz -->
+    android:background="@drawable/lesson_quiz_background"> <!-- Light blue-gray background to match quiz -->
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -29,8 +29,8 @@
                 android:layout_height="80dp"
                 android:src="@android:drawable/star_on"
                 app:tint="#FFC107"
-            android:layout_marginBottom="24dp"
-            android:contentDescription="Result Icon"/>
+                android:layout_marginBottom="24dp"
+                android:contentDescription="Result Icon"/>
 
             <TextView
                 android:id="@+id/result_title_text"
@@ -68,3 +68,4 @@
     android:elevation="4dp"/>
 
 </LinearLayout>
+

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="@drawable/lesson_quiz_background"
     tools:context=".LessonActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:titleTextColor="#FFFFFF"
-            app:title="Lessons"
+            app:title=""
             android:elevation="0dp">
 
             <ImageButton
@@ -30,6 +30,19 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Back"
                 android:tint="#FFFFFF" />
+
+            <TextView
+                    android:id="@+id/lesson_toolbar"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="4dp"
+                    android:textSize="22sp"
+                    android:textColor="#FFFFFF"
+                    tools:text="Lesson"/>
+
+
+
         </androidx.appcompat.widget.Toolbar>
 
         <!-- Header with lesson info - only visible when a lesson is selected -->

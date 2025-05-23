@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:gravity="center_horizontal"
-    android:background="#F9F4FF"> <!-- Light purple background -->
+    android:background="#00F9F4FF"> <!-- Light purple background -->
 
     <TextView
         android:id="@+id/lecture_concept_text"
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:textColor="#4A148C"
+        android:textColor="#FFFFFF"
     android:textSize="24sp"
     android:textStyle="bold"
     android:textAppearance="@style/TextAppearance.AppCompat.Headline"

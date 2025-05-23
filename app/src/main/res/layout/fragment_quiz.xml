@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:gravity="center_horizontal"
-    android:background="#F5F7FF">
+    android:background="@drawable/lesson_quiz_background">
 
     <!-- Score in a rounded box -->
     <androidx.cardview.widget.CardView
@@ -95,3 +95,4 @@ android:backgroundTint="#9B59B6"
     android:textSize="16sp"/>
 
     </LinearLayout>
+

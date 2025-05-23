@@ -737,8 +737,8 @@ public class LessonActivity extends AppCompatActivity {
 
     private List<Question> createQuestionsL1() {
         List<Question> questions = new ArrayList<>();
-        questions.add(new Question("What kind of animal is Python named after?",
-                List.of("Bird", "Snake", "Comedy show"), 2));
+        questions.add(new Question("What is Python named after?",
+                List.of("A Place in Europe", "The Python Snake", "Monty Python"), 2));
         questions.add(new Question("What does a programmer create?",
                 List.of("Food", "Computer Programs", "Books"), 1));
         questions.add(new Question("What can Python help us do?",
@@ -790,7 +790,7 @@ public class LessonActivity extends AppCompatActivity {
         questions.add(new Question("Python is good for beginners because:",
                 List.of("It's easy to read", "It's the oldest language", "It only works on phones"), 0));
         questions.add(new Question("Can Python be used to make games?",
-                List.of("Yes", "No", "Only card games"), 0));
+                List.of("Yes", "No", "Maybe"), 0));
         questions.add(new Question("Python can help analyze:",
                 List.of("Weather", "Data", "Paintings"), 1));
         return questions;
@@ -803,7 +803,7 @@ public class LessonActivity extends AppCompatActivity {
         questions.add(new Question("How do you print text?",
                 List.of("print[Hello]", "print(\"Hello\")", "print{Hello}"), 1));
         questions.add(new Question("Can print() show numbers?",
-                List.of("No", "Yes", "Only integers"), 1));
+                List.of("No", "Yes", "Maybe"), 1));
         questions.add(new Question("print(5 + 3) shows:",
                 List.of("5 + 3", "8", "Error"), 1));
         questions.add(new Question("Multiple items can be printed with:",
@@ -832,12 +832,12 @@ public class LessonActivity extends AppCompatActivity {
                 List.of("Impossible", "Very easy", "Requires special function"), 1));
         questions.add(new Question("print(42) shows:",
                 List.of("forty-two", "4 2", "42"), 2));
-        questions.add(new Question("Math in print works like:",
+        questions.add(new Question("Adding in print works like:",
                 List.of("print(5 + \"3\")", "print(5 + 3)", "print(5 * 3)"), 1));
         questions.add(new Question("To mix numbers and text with +:",
                 List.of("Just add them", "Convert number to string", "Not possible"), 1));
         questions.add(new Question("print() with multiple types:",
-                List.of("Not possible", "Requires commas", "Needs special syntax"), 1));
+                List.of("Not possible", "Requires commas", "Needs many functions"), 1));
         return questions;
     }
 
@@ -863,7 +863,7 @@ public class LessonActivity extends AppCompatActivity {
         questions.add(new Question("Variable names in Python are typically written in:",
                 List.of("ALL_CAPS", "snake_case", "camelCase"), 1));
         questions.add(new Question("Variable names should be:",
-                List.of("Short but not descriptive", "Long and complicated", "Descriptive of what they contain"), 2));
+                List.of("Short but not descriptive", "Very long and complicated", "Descriptive of what they contain"), 2));
         questions.add(new Question("age and AGE in Python are:",
                 List.of("The same variable", "Different variables", "Invalid names"), 1));
         questions.add(new Question("Which is a good variable name?",
@@ -922,7 +922,7 @@ public class LessonActivity extends AppCompatActivity {
                 List.of("a is True, b doesn't matter", "a is True and b is True", "a or b is True"), 1));
         questions.add(new Question("a or b is True when:",
                 List.of("a is True, b doesn't matter", "a is True and b is True", "Either a or b (or both) is True"), 2));
-        questions.add(new Question("not True returns:",
+        questions.add(new Question("a and b being equal to True with a not True statement returns:",
                 List.of("True", "False", "Error"), 1));
         questions.add(new Question("(age > 12) and (height > 150) is True when:",
                 List.of("Either condition is True", "Both conditions are True", "Neither condition is True"), 1));
@@ -937,11 +937,11 @@ public class LessonActivity extends AppCompatActivity {
                 List.of("Repeat code", "Make decisions", "Create variables"), 1));
         questions.add(new Question("In Python, the if block is defined by:",
                 List.of("Curly braces {}", "Indentation", "Parentheses ()"), 1));
-        questions.add(new Question("if age > 18: print(\"Adult\") will run when:",
+        questions.add(new Question("If age > 18: print(\"Adult\") will run when:",
                 List.of("age is 18", "age is greater than 18", "age is less than 18"), 1));
-        questions.add(new Question("if True: executes the code block:",
+        questions.add(new Question("If my if statement says \"if true:\", how often will it execute?",
                 List.of("Always", "Never", "Sometimes"), 0));
-        questions.add(new Question("if statements check if a condition is:",
+        questions.add(new Question("If statements check if a condition is:",
                 List.of("Equal to zero", "A string", "True or False"), 2));
         return questions;
     }
@@ -953,7 +953,7 @@ public class LessonActivity extends AppCompatActivity {
         questions.add(new Question("How many else blocks can an if statement have?",
                 List.of("Any number", "Exactly one", "None"), 1));
         questions.add(new Question("if-else statements are similar to:",
-                List.of("A fork in a road", "A loop", "A variable"), 0));
+                List.of("Decisions", "A loop", "A variable"), 0));
         questions.add(new Question("if score > 90: print(\"A\") else: print(\"B\") prints \"B\" when:",
                 List.of("score is 90", "score is 91", "score is 89"), 0));
         questions.add(new Question("Are else blocks required with if statements?",
@@ -964,13 +964,13 @@ public class LessonActivity extends AppCompatActivity {
     private List<Question> createQuestionsL5_3() {
         List<Question> questions = new ArrayList<>();
         questions.add(new Question("What does elif stand for?",
-                List.of("else if", "electronic life", "elevate if"), 0));
+                List.of("else if", "electronic life", "elevate ifrane"), 0));
         questions.add(new Question("How many elif statements can you have?",
                 List.of("Only one", "Up to three", "As many as needed"), 2));
         questions.add(new Question("When does an elif block run?",
-                List.of("When its condition is True", "When all conditions are True", "When all previous conditions are False and its condition is True"), 2));
+                List.of("When all conditions are false", "When all conditions are True", "When all previous conditions are False and its condition is True"), 2));
         questions.add(new Question("In an if-elif-else structure, how many blocks will execute?",
-                List.of("All of them", "At most one", "At least one"), 1));
+                List.of("All of them", "At most one", "Only one"), 1));
         questions.add(new Question("Which is correct order?",
                 List.of("if, else, elif", "elif, if, else", "if, elif, else"), 2));
         return questions;
