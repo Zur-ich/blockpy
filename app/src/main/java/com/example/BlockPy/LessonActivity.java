@@ -131,7 +131,7 @@ public class LessonActivity extends AppCompatActivity {
                         "Variables can store many types of data:\n" +
                         "• Numbers (integers, decimals)\n" +
                         "• Text (strings)\n" +
-                        "• True/False values (booleans)\n" + 
+                        "• True/False values (booleans)\n" +
                         "• Collections (lists, dictionaries)\n" +
                         "• And much more!\n\n" +
                         "You can also change a variable's value at any time by assigning a new value to it.",

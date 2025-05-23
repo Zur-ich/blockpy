@@ -106,14 +106,14 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Team Member Name"
+                            android:text="Rhimar Clifford Capunong"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Role: Developer"
+                            android:text="Developer"
                             android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -141,14 +141,14 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Team Member Name"
+                            android:text="Dale Zurich Montecillo"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Role: Designer"
+                            android:text="Designer"
                             android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -172,7 +172,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Contact"
+                    android:text="Repository Information"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="#6C5CE7"
@@ -181,15 +181,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Email: contact@blockpy.example.com"
+                    android:text="Github:https://github.com/Zur-ich/blockpy.git"
                     android:textSize="16sp"
                     android:layout_marginBottom="4dp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Website: www.blockpy.example.com"
-                    android:textSize="16sp" />
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
